@@ -20,144 +20,193 @@ function toDecimal(num) {
   return decimal;
 }
 
-// get default subnet according to ip address and make it binary
-const getSubnetBinary = () => {
+// get default subnet according to ip address and make it binary, then make binary decimal
+const getSubnetMask = () => {
+  // We only need the first octet to check class
   const ipAddress = document.getElementsByTagName("input")[0].value;
   const ipAdd = ipAddress.split(".");
   const ipAdd_1 = ipAdd[0];
-  //   const ipAdd_2 = ipAdd[1];
-  //   const ipAdd_3 = ipAdd[2];
-  //   const ipAdd_4 = ipAdd[3];
+
+  // Get the number of host from input
   const host = document.getElementsByTagName("input")[1].value;
 
   let subnet = [];
+
+  // Class A
+  // subnet mask of class A makes binary, then add it in an array
   if (ipAdd_1 >= 0 && ipAdd_1 <= 127) {
     for (let i = 0; i < ipAdd.length; i++) {
       subnet.push(toBinary(classA[i]));
-      if (subnet[i] == "0") {
-        subnet[i] = "00000000";
-      }
     }
-    if (host <= 16777214 && host >= 8388606) {
+
+    // according to the number of host, adjust 0s
+    if (host <= 16777214 && host >= 8388605) {
       subnet[1] = "00000000";
     }
-
-    if (host <= 8388605 && host >= 4194302) {
+    if (host <= 8388606 && host >= 4194301) {
       subnet[1] = "10000000";
     }
-
-    if (host <= 4194301 && host >= 2097150) {
+    if (host <= 4194302 && host >= 2097149) {
       subnet[1] = "11000000";
     }
-
-    if (host <= 2097149 && host >= 1048574) {
+    if (host <= 2097150 && host >= 1048573) {
       subnet[1] = "11100000";
     }
-
-    if (host <= 1048573 && host >= 524286) {
+    if (host <= 1048574 && host >= 524285) {
       subnet[1] = "11110000";
     }
-
-    if (host <= 524285 && host >= 262142) {
+    if (host <= 524286 && host >= 262141) {
       subnet[1] = "11111000";
     }
-
-    if (host <= 262141 && host >= 131070) {
+    if (host <= 262142 && host >= 131069) {
       subnet[1] = "11111100";
     }
-
-    if (host <= 131069 && host >= 65534) {
+    if (host <= 131070 && host >= 65533) {
       subnet[1] = "11111110";
     }
-  } else if (ipAdd_1 >= 128 && ipAdd_1 <= 191) {
-    for (let i = 0; i < ipAdd.length; i++) {
-      subnet.push(toBinary(classB[i]));
-      if (subnet[i] == "0") {
-        subnet[i] = "00000000";
-      }
-    }
-    if (host <= 65533 && host >= 32766) {
+    if (host <= 65534 && host >= 32765) {
       subnet[2] = "00000000";
     }
-
-    if (host <= 32765 && host >= 16382) {
+    if (host <= 32766 && host >= 16381) {
       subnet[2] = "10000000";
     }
-
-    if (host <= 16381 && host >= 8190) {
+    if (host <= 16382 && host >= 8189) {
       subnet[2] = "11000000";
     }
-
-    if (host <= 8189 && host >= 4094) {
+    if (host <= 8190 && host >= 4093) {
       subnet[2] = "11100000";
     }
-
-    if (host <= 4093 && host >= 2046) {
+    if (host <= 4094 && host >= 2045) {
       subnet[2] = "11110000";
     }
-
-    if (host <= 2045 && host >= 1022) {
+    if (host <= 2046 && host >= 1021) {
       subnet[2] = "11111000";
     }
-
-    if (host <= 1021 && host >= 512) {
+    if (host <= 1022 && host >= 511) {
       subnet[2] = "11111100";
     }
-
-    if (host <= 511 && host >= 256) {
+    if (host <= 510 && host >= 253) {
       subnet[2] = "11111110";
     }
-  } else if (ipAdd_1 >= 192 && ipAdd_1 <= 223) {
-    for (let i = 0; i < ipAdd.length; i++) {
-      subnet.push(toBinary(classC[i]));
-      // because we need 8 bits for each
-      if (subnet[i] == "0") {
-        subnet[i] = "00000000";
-      }
-    }
-    if (host <= 255 && host >= 126) {
+    if (host <= 254 && host >= 125) {
       subnet[3] = "00000000";
     }
-
-    if (host <= 125 && host >= 62) {
+    if (host <= 126 && host >= 61) {
       subnet[3] = "10000000";
     }
-
-    if (host <= 61 && host >= 30) {
+    if (host <= 62 && host >= 29) {
       subnet[3] = "11000000";
     }
-
-    if (host <= 29 && host >= 14) {
+    if (host <= 30 && host >= 13) {
       subnet[3] = "11100000";
     }
-
-    if (host <= 13 && host >= 6) {
+    if (host <= 14 && host >= 7) {
       subnet[3] = "11110000";
     }
-
-    if (host <= 5 && host >= 4) {
+    if (host <= 6 && host >= 3) {
       subnet[3] = "11111000";
     }
-
-    if (host <= 3 && host >= 2) {
+    if (host <= 2) {
       subnet[3] = "11111100";
     }
 
-    if (host == 1) {
-      subnet[3] = "11111110";
+    // Class B
+  } else if (ipAdd_1 >= 128 && ipAdd_1 <= 191) {
+    for (let i = 0; i < ipAdd.length; i++) {
+      subnet.push(toBinary(classB[i]));
+    }
+    if (host <= 65534 && host >= 32765) {
+      subnet[2] = "00000000";
+    }
+    if (host <= 32766 && host >= 16381) {
+      subnet[2] = "10000000";
+    }
+    if (host <= 16382 && host >= 8189) {
+      subnet[2] = "11000000";
+    }
+    if (host <= 8190 && host >= 4093) {
+      subnet[2] = "11100000";
+    }
+    if (host <= 4094 && host >= 2045) {
+      subnet[2] = "11110000";
+    }
+    if (host <= 2046 && host >= 1021) {
+      subnet[2] = "11111000";
+    }
+    if (host <= 1022 && host >= 511) {
+      subnet[2] = "11111100";
+    }
+    if (host <= 510 && host >= 253) {
+      subnet[2] = "11111110";
+    }
+    if (host <= 254 && host >= 125) {
+      subnet[3] = "00000000";
+    }
+    if (host <= 126 && host >= 61) {
+      subnet[3] = "10000000";
+    }
+    if (host <= 62 && host >= 29) {
+      subnet[3] = "11000000";
+    }
+    if (host <= 30 && host >= 13) {
+      subnet[3] = "11100000";
+    }
+    if (host <= 14 && host >= 7) {
+      subnet[3] = "11110000";
+    }
+    if (host <= 6 && host >= 3) {
+      subnet[3] = "11111000";
+    }
+    if (host <= 2) {
+      subnet[3] = "11111100";
+    }
+
+    // Class C
+  } else if (ipAdd_1 >= 192 && ipAdd_1 <= 223) {
+    for (let i = 0; i < ipAdd.length; i++) {
+      subnet.push(toBinary(classC[i]));
+    }
+    if (host <= 254 && host >= 125) {
+      subnet[3] = "00000000";
+    }
+    if (host <= 126 && host >= 61) {
+      subnet[3] = "10000000";
+    }
+    if (host <= 62 && host >= 29) {
+      subnet[3] = "11000000";
+    }
+    if (host <= 30 && host >= 13) {
+      subnet[3] = "11100000";
+    }
+    if (host <= 14 && host >= 7) {
+      subnet[3] = "11110000";
+    }
+    if (host <= 6 && host >= 3) {
+      subnet[3] = "11111000";
+    }
+    if (host <= 2) {
+      subnet[3] = "11111100";
     }
   } else {
-    console.log("Check your IP address again");
-  }
-  let subnetmask = [];
-  for (let i = 0; i < 4; i++) {
-    subnetmask.push(toDecimal(subnet[i]));
+    console.log("Please check your IP address again");
   }
 
-  return console.log(`Your subnet mask is.. ${subnetmask}`);
+  let subnetmask1 = "";
+  let subnetmask2 = "";
+  let subnetmask3 = "";
+  let subnetmask4 = "";
+
+  subnetmask1 = toDecimal(subnet[0]);
+  subnetmask2 = toDecimal(subnet[1]);
+  subnetmask3 = toDecimal(subnet[2]);
+  subnetmask4 = toDecimal(subnet[3]);
+
+  console.log(subnetmask1);
+
+  return console.log(
+    `Your subnet mask is ${subnetmask1}.${subnetmask2}.${subnetmask2}.${subnetmask4}`
+  );
 };
 
 // console.log(getSubnetBinary());
-clcBtn.addEventListener("click", getSubnetBinary);
-
-// according to the number of hosts, change subnet mask binary 0
+clcBtn.addEventListener("click", getSubnetMask);
