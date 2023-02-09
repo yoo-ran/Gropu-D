@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>Document</title>
     <style>
-    
+        .ipAlert{
+            width: 50px;
+            height: 50px;
+            background-color: antiquewhite;
+        }
     </style>
 </head>
 <body>
     <div style='width: 60%;'>
         <div>
             <label>IP address</label>
-            <input placeholder="0.0.0.0">
+            <input placeholder="0.0.0.0" pattern="[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}" class='ipInput'/>
         </div>
         <div>
             <label>Hosts</label>
@@ -21,7 +26,7 @@
         </div>
         <div>
             <label>Subnets</label>
-            <input placeholder="Subnets">
+            <input type='number' placeholder="Subnets">
         </div>
         <div>
             <button>Calculate</button>
@@ -50,6 +55,17 @@
     let subM3 = 0;
     let subM4 = 0;
     let subMask = `${subM1}.${subM2}.${subM3}.${subM4}`
+    
+
+    // $(".ipInput").change(()=>{
+    //     var patt = new RegExp("[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}");
+    //     var res = patt.test($(".ipInput").val());
+    //     if( !patt.test( $(".ipInput").val()) ){
+    //     alert("Subnet Form is wrong");
+    //     return
+    // }
+    // })
+    
 
     const decimal =  (n,type)=>{
             let subMaskDecimal = 0;
@@ -86,8 +102,9 @@
         let arr = [...tmpArr]
         let tr = document.createElement("tr")
         let tbody = document.getElementsByTagName("tbody")[0]
-        if(error!=null){
-            alert("Subnet is over limitation")
+        console.log(error);
+        if(error=="over"||error=="No value"){
+            alert(error)
         }else{
             for(let val of arr){
                 let td = document.createElement("td")
@@ -96,8 +113,6 @@
             }
             tbody.appendChild(tr)
         }
-        console.log(tr);
-        console.log(error);
     }
 
     const ipClass = () => {
@@ -112,86 +127,89 @@
         let prefix = 0;
         let err = ""
         
-        
-        if(firstOctet>=000 && firstOctet<=127){
-            ipclass = "A"
-            subM1 = 255;
-            if(subnet==2**0){subnetMask = decimal(0,"a"); prefix=8;}
-            else if (subnet==2**1){subnetMask = decimal(1,"a"); prefix=9}
-            else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"a"); prefix=10}
-            else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"a"); prefix=11}
-            else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"a"); prefix=12}
-            else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"a"); prefix=13}
-            else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"a"); prefix=14}
-            else if (subnet>=2**6+1 && subnet<=2**7){subnetMask = decimal(7,"a"); prefix=15}
-            else if (subnet>=2**7+1 && subnet<=2**8){subnetMask = decimal(0,"a"); prefix=16}
-            else if (subnet>=2**8+1 && subnet<=2**9){subnetMask = decimal(1,"a"); prefix=17}
-            else if (subnet>=2**9+1 && subnet<=2**10){subnetMask = decimal(2,"a"); prefix=18}
-            else if (subnet>=2**10+1 && subnet<=2**11){subnetMask = decimal(3,"a"); prefix=19}
-            else if (subnet>=2**11+1 && subnet<=2**12){subnetMask = decimal(4,"a"); prefix=20}
-            else if (subnet>=2**12+1 && subnet<=2**13){subnetMask = decimal(5,"a"); prefix=21}
-            else if (subnet>=2**13+1 && subnet<=2**14){subnetMask = decimal(6,"a"); prefix=22}
-            else if (subnet>=2**14+1 && subnet<=2**15){subnetMask = decimal(7,"a"); prefix=23}
-            else if (subnet>=2**15+1 && subnet<=2**16){subnetMask = decimal(0,"a"); prefix=24}
-            else if (subnet>=2**16+1 && subnet<=2**17){subnetMask = decimal(1,"a"); prefix=25}
-            else if (subnet>=2**17+1 && subnet<=2**18){subnetMask = decimal(2,"a"); prefix=26}
-            else if (subnet>=2**18+1 && subnet<=2**19){subnetMask = decimal(3,"a"); prefix=27}
-            else if (subnet>=2**19+1 && subnet<=2**20){subnetMask = decimal(4,"a"); prefix=28}
-            else if (subnet>=2**20+1 && subnet<=2**21){subnetMask = decimal(5,"a"); prefix=29}
-            else if (subnet>=2**21+1 && subnet<=2**22){subnetMask = decimal(6,"a"); prefix=30}
-            else{err="hey"}
-
-        }else if (firstOctet>=128 && firstOctet<=191){
-            ipclass = "B"
-            subM1 = 255;
-            subM2 = 255;
-        
-            if(subnet==2**0){subnetMask = decimal(0,"b"); prefix=16; }
-            else if (subnet==2**1){subnetMask = decimal(1,"b"); prefix=17;}
-            else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"b"); prefix=18;}
-            else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"b"); prefix=19}
-            else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"b"); prefix=20}
-            else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"b"); prefix=21}
-            else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"b"); prefix=22}
-            else if (subnet>=2**6+1 && subnet<=2**7){subnetMask = decimal(7,"b"); prefix=23}
-            else if (subnet>=2**7+1 && subnet<=2**8){subnetMask = decimal(0,"b"); prefix=24}
-            else if (subnet>=2**8+1 && subnet<=2**9){subnetMask = decimal(1,"b"); prefix=25}
-            else if (subnet>=2**9+1 && subnet<=2**10){subnetMask = decimal(2,"b"); prefix=26}
-            else if (subnet>=2**10+1 && subnet<=2**11){subnetMask = decimal(3,"b"); prefix=27}
-            else if (subnet>=2**11+1 && subnet<=2**12){subnetMask = decimal(4,"b"); prefix=28}
-            else if (subnet>=2**12+1 && subnet<=2**13){subnetMask = decimal(5,"b"); prefix=29}
-            else if (subnet>=2**13+1 && subnet<=2**14){subnetMask = decimal(6,"b"); prefix=30}
-            else{err="hey"}
-
-        }else if(firstOctet>=192 && firstOctet<=223){
-            ipclass = "C"
-            subM1 = 255;
-            subM2 = 255;
-            subM3 = 255;
-            if(subnet==2**0){subnetMask = decimal(0,"c"); prefix=24; }
-            else if (subnet==2**1){subnetMask = decimal(1,"c"); prefix=25;}
-            else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"c"); prefix=26;}
-            else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"c"); prefix=27}
-            else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"c"); prefix=28}
-            else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"c"); prefix=29}
-            else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"c"); prefix=30}
-            else{err="hey"}
+            for(let i=0; i<4; i++){
+                if(ipStr[i].length>0&&ipStr[i].length<4){
+                if(firstOctet>=000 && firstOctet<=127){
+                ipclass = "A"
+                subM1 = 255;
+                if(subnet==2**0){subnetMask = decimal(0,"a"); prefix=8;}
+                else if (subnet==2**1){subnetMask = decimal(1,"a"); prefix=9}
+                else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"a"); prefix=10}
+                else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"a"); prefix=11}
+                else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"a"); prefix=12}
+                else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"a"); prefix=13}
+                else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"a"); prefix=14}
+                else if (subnet>=2**6+1 && subnet<=2**7){subnetMask = decimal(7,"a"); prefix=15}
+                else if (subnet>=2**7+1 && subnet<=2**8){subnetMask = decimal(0,"a"); prefix=16}
+                else if (subnet>=2**8+1 && subnet<=2**9){subnetMask = decimal(1,"a"); prefix=17}
+                else if (subnet>=2**9+1 && subnet<=2**10){subnetMask = decimal(2,"a"); prefix=18}
+                else if (subnet>=2**10+1 && subnet<=2**11){subnetMask = decimal(3,"a"); prefix=19}
+                else if (subnet>=2**11+1 && subnet<=2**12){subnetMask = decimal(4,"a"); prefix=20}
+                else if (subnet>=2**12+1 && subnet<=2**13){subnetMask = decimal(5,"a"); prefix=21}
+                else if (subnet>=2**13+1 && subnet<=2**14){subnetMask = decimal(6,"a"); prefix=22}
+                else if (subnet>=2**14+1 && subnet<=2**15){subnetMask = decimal(7,"a"); prefix=23}
+                else if (subnet>=2**15+1 && subnet<=2**16){subnetMask = decimal(0,"a"); prefix=24}
+                else if (subnet>=2**16+1 && subnet<=2**17){subnetMask = decimal(1,"a"); prefix=25}
+                else if (subnet>=2**17+1 && subnet<=2**18){subnetMask = decimal(2,"a"); prefix=26}
+                else if (subnet>=2**18+1 && subnet<=2**19){subnetMask = decimal(3,"a"); prefix=27}
+                else if (subnet>=2**19+1 && subnet<=2**20){subnetMask = decimal(4,"a"); prefix=28}
+                else if (subnet>=2**20+1 && subnet<=2**21){subnetMask = decimal(5,"a"); prefix=29}
+                else if (subnet>=2**21+1 && subnet<=2**22){subnetMask = decimal(6,"a"); prefix=30}
+                else{err="over"}
+    
+            }else if (firstOctet>=128 && firstOctet<=191){
+                ipclass = "B"
+                subM1 = 255;
+                subM2 = 255;
             
+                if(subnet==2**0){subnetMask = decimal(0,"b"); prefix=16; }
+                else if (subnet==2**1){subnetMask = decimal(1,"b"); prefix=17;}
+                else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"b"); prefix=18;}
+                else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"b"); prefix=19}
+                else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"b"); prefix=20}
+                else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"b"); prefix=21}
+                else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"b"); prefix=22}
+                else if (subnet>=2**6+1 && subnet<=2**7){subnetMask = decimal(7,"b"); prefix=23}
+                else if (subnet>=2**7+1 && subnet<=2**8){subnetMask = decimal(0,"b"); prefix=24}
+                else if (subnet>=2**8+1 && subnet<=2**9){subnetMask = decimal(1,"b"); prefix=25}
+                else if (subnet>=2**9+1 && subnet<=2**10){subnetMask = decimal(2,"b"); prefix=26}
+                else if (subnet>=2**10+1 && subnet<=2**11){subnetMask = decimal(3,"b"); prefix=27}
+                else if (subnet>=2**11+1 && subnet<=2**12){subnetMask = decimal(4,"b"); prefix=28}
+                else if (subnet>=2**12+1 && subnet<=2**13){subnetMask = decimal(5,"b"); prefix=29}
+                else if (subnet>=2**13+1 && subnet<=2**14){subnetMask = decimal(6,"b"); prefix=30}
+                else{err="over"}
+    
+            }else if(firstOctet>=192 && firstOctet<=223){
+                ipclass = "C"
+                subM1 = 255;
+                subM2 = 255;
+                subM3 = 255;
+                if(subnet==2**0){subnetMask = decimal(0,"c"); prefix=24; }
+                else if (subnet==2**1){subnetMask = decimal(1,"c"); prefix=25;}
+                else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"c"); prefix=26;}
+                else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"c"); prefix=27}
+                else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"c"); prefix=28}
+                else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"c"); prefix=29}
+                else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"c"); prefix=30}
+                else{err="over"}
+            }else{
+                ipclass = "The IP class is D or E"
+            }
         }else{
-            ipclass = "The IP class is D or E"
+            return 
         }
+    }
+          
+ 
+            
         console.log(ipAdd);
         console.log(firstOctet);
         console.log(ipclass);
         console.log(subnetMask);
         console.log(prefix);
         let displayArr = [ipclass,0,subnetMask,prefix]
-        
-        // console.log(result);
-        console.log(displayArr);
         displayTable(displayArr,err)
-
-    }
+}
     
     calBtn.addEventListener("click",ipClass)
 
