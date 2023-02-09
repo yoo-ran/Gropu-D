@@ -7,9 +7,27 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <div>
+        <label>IP address</label>
+        <input placeholder="0.0.0.0" maxlength="15" title="'yymmdd'와 같은 6자리 숫자">
+    </div>
 </body>
 <script>
-    
+     const ipClass = () => {
+        // let subnet = parseInt(document.getElementsByTagName("input")[2].value)
+        let ipAdd = document.getElementsByTagName("input")[0].value
+        let ipStr = String(ipAdd).split(".")
+        let firstOctet = parseInt(ipStr[0])
+        let secondOctet = parseInt(ipStr[1])
+        let thirdOctet = parseInt(ipStr[2])
+        let fourthOctet = parseInt(ipStr[3])
+
+        
+
+        if(!ipStr[0].length>0&&ipStr[0].length<4&&ipStr[1].length>0&&ipStr[1].length<4&&ipStr[2].length>0&&ipStr[2].length<4&&ipStr[3].length>0&&ipStr[3].length<4&&ipStr[4].length>0&&ipStr[4].length<4){
+            alert('hey')
+        }
+     }
+     ipClass()
 </script>
 </html>
