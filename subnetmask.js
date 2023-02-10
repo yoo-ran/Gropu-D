@@ -31,7 +31,7 @@ const getSubnetMask = () => {
   const host = document.getElementsByTagName("input")[1].value;
 
   let subnet = [];
-  let ipClass = ""
+  let ipClass = "";
 
   // Class A
   // subnet mask of class A makes binary, then add it in an array
@@ -193,26 +193,25 @@ const getSubnetMask = () => {
   subnetmask4 = toDecimal(subnet[3]);
   let subnetmask = `${subnetmask1}.${subnetmask2}.${subnetmask3}.${subnetmask4}`;
 
+  // populate IP class and subnet mask in table
   let tbody = document.getElementsByTagName("tbody")[0];
   let tr = document.createElement("tr");
   tbody.appendChild(tr);
-  let tdClass =  document.createElement("td");
-  let td2 =  document.createElement("td");
+  let tdClass = document.createElement("td");
+  let td2 = document.createElement("td");
   let td4 = document.createElement("td");
   let tdSubnet = document.createElement("td");
-  tdClass.innerText = ipClass; 
-  td2.innerText = ""; 
-  tdSubnet.innerText = subnetmask;   
-  td4.innerText = "";   
+  tdClass.innerText = ipClass;
+  td2.innerText = "";
+  tdSubnet.innerText = subnetmask;
+  td4.innerText = "";
   tr.appendChild(tdClass);
   tr.appendChild(td2);
   tr.appendChild(tdSubnet);
   tr.appendChild(td4);
-  
-  
+
   console.log(subnetmask);
   console.log(ipClass);
-
 };
 
 clcBtn.addEventListener("click", getSubnetMask);
