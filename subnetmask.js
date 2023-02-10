@@ -31,10 +31,12 @@ const getSubnetMask = () => {
   const host = document.getElementsByTagName("input")[1].value;
 
   let subnet = [];
+  let ipClass = ""
 
   // Class A
   // subnet mask of class A makes binary, then add it in an array
   if (ipAdd_1 >= 0 && ipAdd_1 <= 127) {
+    ipClass = "A";
     for (let i = 0; i < ipAdd.length; i++) {
       subnet.push(toBinary(classA[i]));
     }
@@ -112,6 +114,7 @@ const getSubnetMask = () => {
 
     // Class B
   } else if (ipAdd_1 >= 128 && ipAdd_1 <= 191) {
+    ipClass = "B";
     for (let i = 0; i < ipAdd.length; i++) {
       subnet.push(toBinary(classB[i]));
     }
@@ -156,6 +159,7 @@ const getSubnetMask = () => {
 
     // Class C
   } else if (ipAdd_1 >= 192 && ipAdd_1 <= 223) {
+    ipClass = "C";
     for (let i = 0; i < ipAdd.length; i++) {
       subnet.push(toBinary(classC[i]));
     }
@@ -187,11 +191,28 @@ const getSubnetMask = () => {
   subnetmask2 = toDecimal(subnet[1]);
   subnetmask3 = toDecimal(subnet[2]);
   subnetmask4 = toDecimal(subnet[3]);
+  let subnetmask = `${subnetmask1}.${subnetmask2}.${subnetmask3}.${subnetmask4}`;
 
-  return console.log(
-    `Your subnet mask is ${subnetmask1}.${subnetmask2}.${subnetmask3}.${subnetmask4}`
-  );
+  let tbody = document.getElementsByTagName("tbody")[0];
+  let tr = document.createElement("tr");
+  tbody.appendChild(tr);
+  let tdClass =  document.createElement("td");
+  let td2 =  document.createElement("td");
+  let td4 = document.createElement("td");
+  let tdSubnet = document.createElement("td");
+  tdClass.innerText = ipClass; 
+  td2.innerText = ""; 
+  tdSubnet.innerText = subnetmask;   
+  td4.innerText = "";   
+  tr.appendChild(tdClass);
+  tr.appendChild(td2);
+  tr.appendChild(tdSubnet);
+  tr.appendChild(td4);
+  
+  
+  console.log(subnetmask);
+  console.log(ipClass);
+
 };
 
-// console.log(getSubnetBinary());
 clcBtn.addEventListener("click", getSubnetMask);
