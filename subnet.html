@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>IP Subnetting Calculator</h1>
+    <div class="main__content">
+        <div class="main__content__button">
+            <button>Calculate</button>
+        </div>
+        <div class="main__content__inputs">
+            <label>IP address:</label>
+            <input placeholder="0.0.0.0" value="192.168.10.0"/>
+        </div>
+        <div class="main__content__inputs">
+            <select>
+                <option value="0">Hosts:</option>
+                <option value="1">Subnets:</option>
+            </select>
+            <input placeholder="Hosts" value="10"/>
+        </div>
+        <!-- <div class="main__content__inputs">
+            <label>Subnets:</label>
+            <input placeholder="Subnets">
+        </div> -->
+    </div>
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">IP Class</th>
+            <th scope="col">IP Address</th>
+            <th scope="col">Subnet Mask</th>
+            <th scope="col">Prefix Notation</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <table id="claire">
+        <thead>
+          <tr>
+            <th scope="col">Network ID</th>
+            <th scope="col">IP Range</th>
+            <th scope="col">Broadcast ID</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+<script type="module" src="./subnetmask.js">
+    let calBtn = document.getElementsByTagName("button")[0]
+    
+    let ipclass = null;
+    
+    let subM1 = 0;
+    let subM2 = 0;
+    let subM3 = 0;
+    let subM4 = 0;
+    let subMask = `${subM1}.${subM2}.${subM3}.${subM4}`
+
+    const decimal =  (n,type)=>{
+            let subMaskDecimal = 0;
+            let binaryArr = [Math.pow(2,7),Math.pow(2,6),Math.pow(2,5),Math.pow(2,4),Math.pow(2,3),Math.pow(2,2),Math.pow(2,1)]
+            for(let i=0; i<n; i++){
+                subMaskDecimal += binaryArr[i]
+            }
+            if(type=="a"){
+                subM2 = subMaskDecimal;
+            }else if(type=="b"){
+                subM3 = subMaskDecimal;
+            }else if(type=="c"){
+                subM4 = subMaskDecimal;
+            }
+            subMask = `${subM1}.${subM2}.${subM3}.${subM4}`
+            return subMask
+    }
+
+    const displayTable1 = (tmpArr) => {
+        let arr = [...tmpArr]
+        let tr = document.createElement("tr")
+        let tbody = document.getElementsByTagName("tbody")[0]
+        for(let val of arr){
+            let td = document.createElement("td")
+            td.innerText = val
+            tr.appendChild(td)
+        }
+        console.log(tr);
+        tbody.appendChild(tr)
+    }
+
+    const ipClass = () => {
+        let subnet = parseInt(document.getElementsByTagName("input")[2].value)
+        let ipAdd = document.getElementsByTagName("input")[0].value
+        let ipStr = String(ipAdd).split(".")
+        let firstOctet = parseInt(ipStr[0])
+        let secondOctet = parseInt(ipStr[1])
+        let thirdOctet = parseInt(ipStr[2])
+        let fourthOctet = parseInt(ipStr[3])
+        let subnetMask = 0;
+        let prefix = 0;
+        
+        if(firstOctet>=000 && firstOctet<=127){
+            ipclass = "A"
+            subM1 = 255;
+            if(subnet==2**0){subnetMask = decimal(0,"a"); prefix=8;}
+            else if (subnet==2**1){subnetMask = decimal(1,"a"); prefix=9}
+            else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"a"); prefix=10}
+            else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"a"); prefix=11}
+            else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"a"); prefix=12}
+            else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"a"); prefix=13}
+            else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"a"); prefix=14}
+            else if (subnet>=2**6+1 && subnet<=2**7){subnetMask = decimal(7,"a"); prefix=15}
+
+        }else if (firstOctet>=128 && firstOctet<=191){
+            ipclass = "B"
+            subM1 = 255;
+            subM2 = 255;
+        
+            if(subnet==2**0){subnetMask = decimal(0,"b"); prefix=16; }
+            else if (subnet==2**1){subnetMask = decimal(1,"b"); prefix=17;}
+            else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"b"); prefix=18;}
+            else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"b"); prefix=19}
+            else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"b"); prefix=20}
+            else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"b"); prefix=21}
+            else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"b"); prefix=22}
+            else if (subnet>=2**6+1 && subnet<=2**7){subnetMask = decimal(7,"b"); prefix=23}
+
+        }else if(firstOctet>=192 && firstOctet<=223){
+            ipclass = "C"
+            subM1 = 255;
+            subM2 = 255;
+            subM3 = 255;
+            if(subnet==2**0){subnetMask = decimal(0,"c"); prefix=24; }
+            else if (subnet==2**1){subnetMask = decimal(1,"c"); prefix=25;}
+            else if (subnet>=2**1+1 && subnet<=2**2){subnetMask = decimal(2,"c"); prefix=26;}
+            else if (subnet>=2**2+1 && subnet<=2**3){subnetMask = decimal(3,"c"); prefix=27}
+            else if (subnet>=2**3+1 && subnet<=2**4){subnetMask = decimal(4,"c"); prefix=28}
+            else if (subnet>=2**4+1 && subnet<=2**5){subnetMask = decimal(5,"c"); prefix=29}
+            else if (subnet>=2**5+1 && subnet<=2**6){subnetMask = decimal(6,"c"); prefix=30}
+        }else{
+            ipclass = "The IP class is D or E"
+        }
+        console.log(ipAdd);
+        console.log(firstOctet);
+        console.log(ipclass);
+        console.log(subnetMask);
+        console.log(prefix);
+        let displayArr = [ipclass,0,subnetMask,prefix]
+        console.log(displayArr);
+        displayTable(displayArr)
+
+    }
+    
+    calBtn.addEventListener("click",ipClass)
+
+</script>
+</html>
