@@ -32,6 +32,7 @@ const getSubnetMask = () => {
 
   let subnet = [];
   let ipClass = "";
+  let prefix = "";
 
   // Class A
   // subnet mask of class A makes binary, then add it in an array
@@ -112,6 +113,8 @@ const getSubnetMask = () => {
       subnet[3] = "11111100";
     }
 
+    prefix = (subnet[1].match(/1/g) || []).length + (subnet[2].match(/1/g) || []).length + (subnet[3].match(/1/g) || []).length + 8;
+
     // Class B
   } else if (ipAdd_1 >= 128 && ipAdd_1 <= 191) {
     ipClass = "B";
@@ -156,6 +159,7 @@ const getSubnetMask = () => {
       subnet[2] = "11111111";
       subnet[3] = "11111100";
     }
+    prefix = (subnet[2].match(/1/g) || []).length + (subnet[3].match(/1/g) || []).length + 16;
 
     // Class C
   } else if (ipAdd_1 >= 192 && ipAdd_1 <= 223) {
@@ -178,6 +182,8 @@ const getSubnetMask = () => {
     } else if (host <= 2) {
       subnet[3] = "11111100";
     }
+    prefix = (subnet[3].match(/1/g) || []).length + 24;
+
   } else {
     console.log("Please check your IP address again");
   }
@@ -204,7 +210,7 @@ const getSubnetMask = () => {
   tdClass.innerText = ipClass;
   td2.innerText = "";
   tdSubnet.innerText = subnetmask;
-  td4.innerText = "";
+  td4.innerText = prefix;
   tr.appendChild(tdClass);
   tr.appendChild(td2);
   tr.appendChild(tdSubnet);
