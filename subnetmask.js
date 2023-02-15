@@ -10,12 +10,10 @@ function toBinary(num) {
 }
 
 // binary to decimal
-function toDecimal(num) {
+function toDecimal(binary) {
   let decimal = 0;
-  for (let i = 0; i < num.length; i++) {
-    if (num[num.length - (i + 1)] === "1") {
-      decimal += 2 ** i;
-    }
+  for (let i = 0; i < binary.length; i++) {
+    decimal = decimal * 2 + parseInt(binary[i]);
   }
   return decimal;
 }
