@@ -4,13 +4,13 @@ const classB = [255, 255, 0, 0];
 const classC = [255, 255, 255, 0];
 
 // function for decimal to binary
-function toBinary(num) {
+const toBinary = (num) => {
   const binary = num.toString(2);
   return binary;
 }
 
 // binary to decimal
-function toDecimal(binary) {
+const toDecimal = (binary) => {
   let decimal = 0;
   for (let i = 0; i < binary.length; i++) {
     decimal = decimal * 2 + parseInt(binary[i]);
